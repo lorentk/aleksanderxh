@@ -1,3 +1,4 @@
+# i importojme modulet
 from Tkinter import *
 import sqlite3
 import tkMessageBox
