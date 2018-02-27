@@ -1,4 +1,5 @@
-# update the appointments
+# ky "program" sherben per kerkimin dhe ndryshimin e te dhenave te nxenesve
+# importojm modulet
 from Tkinter import *
 import tkMessageBox
 import sqlite3
@@ -9,26 +10,25 @@ c = conn.cursor()
 class Application:
     def __init__(self, master):
         self.master = master
-        # heading label
+        # labeli kryesor
         self.heading = Label(master, text="Kerko/Perditso nxenesit",  fg='steelblue', font=('arial 40 bold'))
         self.heading.place(x=400, y=0)
 
-        # search criteria -->name
+        
         self.name = Label(master, text="Shkruaj emrin e nxenesit", font=('arial 18 bold'))
         self.name.place(x=450, y=100)
 
-        # entry for  the name
+       
         self.namenet = Entry(master, width=50)
         self.namenet.place(x=450, y=148)
 
-        # search button
+        # butoni kerko
         self.search = Button(master, text="Kerko", width=12, height=1, bg='steelblue', command=self.search_db)
         self.search.place(x=550, y=178)
-    # function to search
+    # funksioni per butonin kerko
     def search_db(self):
         self.input = self.namenet.get()
-        # execute sql
-
+        # marrim t'dhena n'db
         sql = "SELECT * FROM appointments WHERE name LIKE ?"
         self.res = c.execute(sql, (self.input,))
         for self.row in self.res:
@@ -38,7 +38,7 @@ class Application:
             self.location = self.row[4]
             self.time = self.row[6]
             self.phone = self.row[5]
-        # creating the update form
+        # perditsimi 
         self.uname = Label(self.master, text="Emri dhe mbiemri", font=('arial 18 bold'))
         self.uname.place(x=0, y=140)
 
@@ -57,8 +57,7 @@ class Application:
         self.uphone = Label(self.master, text="Numri i tel.", font=('arial 18 bold'))
         self.uphone.place(x=0, y=340)
 
-        # entries for each labels==========================================================
-        # ===================filling the search result in the entry box to update
+       # -------
         self.ent1 = Entry(self.master, width=30)
         self.ent1.place(x=300, y=140)
         self.ent1.insert(END, str(self.name1))
@@ -83,15 +82,15 @@ class Application:
         self.ent6.place(x=300, y=340)
         self.ent6.insert(END, str(self.phone))
 
-        # button to execute update
+        # butoni per me ekzekutu komanden e perditsimit/ndryshimit
         self.update = Button(self.master, text="Perditso", width=20, height=2, bg='lightblue', command=self.update_db)
         self.update.place(x=400, y=380)
 
-        # button to delete
+        # butoni per me fshi 
         self.delete = Button(self.master, text="Fshij", width=20, height=2, bg='red', command=self.delete_db)
         self.delete.place(x=150, y=380)
     def update_db(self):
-        # declaring the variables to update
+        # deklarimi i t'dhenave t'ndryshuara
         self.var1 = self.ent1.get() #updated name
         self.var2 = self.ent2.get() #updated age
         self.var3 = self.ent3.get() #updated gender
@@ -104,7 +103,7 @@ class Application:
         conn.commit()
         tkMessageBox.showinfo("U perditsua", "U perditsua me sukses.")
     def delete_db(self):
-        # delete the appointment
+        # fshirja
         sql2 = "DELETE FROM appointments WHERE name LIKE ?"
         c.execute(sql2, (self.namenet.get(),))
         conn.commit()
@@ -115,7 +114,7 @@ class Application:
         self.ent4.destroy()
         self.ent5.destroy()
         self.ent6.destroy()
-# creating the object
+# krijimi i objektit
 root = Tk()
 b = Application(root)
 root.geometry("1200x720+0+0")
