@@ -2,12 +2,12 @@ from Tkinter import *
 import sqlite3
 import tkMessageBox
 
-# connect to the databse.
+# konektohemi ne databaze
 conn = sqlite3.connect('database.db')
-# cursor to move around the databse
+# kursori per te levizur ne db
 c = conn.cursor()
 
-# empty list to later append the ids from the database
+# id
 ids = []
 
 
@@ -16,14 +16,14 @@ class Application:
     def __init__(self, master):
         self.master = master
 
-        # creating the frames in the master
+        # i krijojme frames
         self.left = Frame(master, width=800, height=720, bg='steelblue')
         self.left.pack(side=LEFT)
 
         self.right = Frame(master, width=400, height=720, bg='steelblue')
         self.right.pack(side=RIGHT)
 
-        # labels for the window
+        # labels per dritaret
         self.heading = Label(self.left, text="SH.M.L. Aleksander Xhuvani", font=('arial 40 bold'), fg='black',
                              bg='steelblue')
         self.heading.place(x=0, y=0)
@@ -47,11 +47,11 @@ class Application:
         self.time = Label(self.left, text="Emri i prindit", font=('arial 18 bold'), fg='white', bg='steelblue')
         self.time.place(x=0, y=260)
 
-        # phone
+        # nr.tel
         self.phone = Label(self.left, text="Nurmi i telefonit", font=('arial 18 bold'), fg='white', bg='steelblue')
         self.phone.place(x=0, y=300)
 
-        # Entries for all labels============================================================
+        # Hyrjet per labelat============================================================
         self.name_ent = Entry(self.left, width=30)
         self.name_ent.place(x=250, y=100)
 
@@ -75,17 +75,17 @@ class Application:
                              command=self.add_appointment)
         self.submit.place(x=300, y=340)
 
-        # getting the number of appointments fixed to view in the log
+        # merret numri prej appointments n'db 
         sql2 = "SELECT ID FROM appointments "
         self.result = c.execute(sql2)
         for self.row in self.result:
             self.id = self.row[0]
             ids.append(self.id)
 
-        # ordering the ids
+        # i merr id
         self.new = sorted(ids)
         self.final_id = self.new[len(ids) - 1]
-        # displaying the logs in our right frame
+        # i shfaq nx ne anen e djatht te dritares
         self.logs = Label(self.right, text="Stats.", font=('arial 28 bold'), fg='white', bg='steelblue')
         self.logs.place(x=0, y=0)
 
@@ -93,9 +93,9 @@ class Application:
         self.box.place(x=20, y=60)
         self.box.insert(END, "Te gjithe nxenesit  :  " + str(self.final_id))
 
-    # funtion to call when the submit button is clicked
+    # funksioni per me vepru kur klikohet butoni
     def add_appointment(self):
-        # getting the user inputs
+        # inputs t'user
         self.val1 = self.name_ent.get()
         self.val2 = self.age_ent.get()
         self.val3 = self.gender_ent.get()
@@ -103,11 +103,11 @@ class Application:
         self.val5 = self.time_ent.get()
         self.val6 = self.phone_ent.get()
 
-        # checking if the user input is empty
+        # kontrollojme nese input i user-it eshte i zbrazur
         if self.val1 == '' or self.val2 == '' or self.val3 == '' or self.val4 == '' or self.val5 == '':
             tkMessageBox.showinfo("Verejtje", "Ju lutem mbushini te gjitha kutite")
         else:
-            # now we add to the database
+            # tash nese eshte gjithcka ne rregull shtojme te dhenat ne db
             sql = "INSERT INTO 'appointments' (name, age, gender, location, scheduled_time, phone) VALUES(?, ?, ?, ?, ?, ?)"
             c.execute(sql, (self.val1, self.val2, self.val3, self.val4, self.val5, self.val6))
             conn.commit()
@@ -116,18 +116,18 @@ class Application:
 
 
 
-# creating the object
+# krijojme objektin
 root = Tk()
 b = Application(root)
 
-# resolution of the window
+# rezolucioni i dritares ne pixel
 root.geometry("1200x720+0+0")
 
-# preventing the resize feature
+# vendosim nese dritarja mund te zmadhohet/zvoglohet
 root.resizable(True, True)
 
 # tittuli i dritares
 root.title("Regjistrimi i nxensve")
 
-# end the loop
+# fundi i loop
 root.mainloop()
